@@ -22,6 +22,8 @@
     
     2.2. [Data Preprocessing](#22-data-preprocessing)
 
+    2.3. [EDA](#23-eda)
+
 3. [Model](#3-model)
 
     3.1. [Model: Logistic Regression](#31-model-logistic-regression)
@@ -98,13 +100,23 @@ I've crawled the data from this [site](https://gol.gg/tournament/tournament-stat
 </br>
 
 ### 2.2. Data Preprocessing
-- Used features are `Win`, `Team`, `Player`, `Role`, `Kills`, `Deaths`, `Assists`, `KDA`, `K+A Per Minute`, `KP%`, `Total damage taken`, `Total heal`, `Time ccing others`, `Damage self mitigated`, `Total damage to Champion`, `Damage dealt to turrets`, `DPM`, `Total_CS`, `CSM`, `Golds`, `GPM`, 'Vision Score', 'GD@15', 'CSD@15', 'XPD@15', 'LVLD@15'
+- Used features are `Win`, `Team`, `Player`, `Role`, `Kills`, `Deaths`, `Assists`, `KDA`, `K+A Per Minute`, `KP%`, `Total damage taken`, `Total heal`, `Time ccing others`, `Damage self mitigated`, `Total damage to Champion`, `Damage dealt to turrets`, `DPM`, `Total_CS`, `CSM`, `Golds`, `GPM`, `Vision Score`, `GD@15`, `CSD@15`, `XPD@15`, `LVLD@15`
 
-- Made a new feature called `Total_CS` which combines 'CS in Team's Jungle", "CS in Enemy Jungle", "CS"
+- Made a new feature called `Total_CS` which combines `CS in Team's Jungle`, `CS in Enemy Jungle`, `CS`
 - Made a new feature called `winner`
 - The observation in KDA which is `Perfect KDA` are replaced by this formula `KDA = (K+A)*1.2`
+
 Scaling
+
 PCA
+### 2.3. EDA
+
+<p align="Center">
+CLICK THE IMG FOR BETTER VIEW
+<img width="770" src="https://user-images.githubusercontent.com/92352445/183241830-65b0e6d7-cced-4383-90af-0989ebbee2a9.png">
+</p>
+
+Check the correlation coefficient, some features are showing correlation.
 
 ## 3. Model
 ### 3.1. Model: Logistic Regression

@@ -58,15 +58,51 @@ Design predict models and analyze results by using League of Legends game data.
 
 ## 2. Data
 I've crawled the data from this [site](https://gol.gg/tournament/tournament-stats/LCK%20Spring%202021/)
+
+<p align="Center">
+<img width="770" alt="스크린샷 2022-08-06 오후 5 25 59" src="https://user-images.githubusercontent.com/92352445/183241188-68a8c00e-7563-4a2f-b91d-0034474b8abd.png">
+</p>
+
 ### 2.1. Table Specification
 
+</br>
+<div align="Center">
+  
+|Feature|Explaination|Feature|Explaination|
+|:--------:|:-----------:|:-------:|:-------:|
+|Team|Team Name|Total damage to Champion|Total damage to Champion|
+|Player|Player Name|Physical Damage|Physical Damage|
+|Role|Role|Magic Damage|Magic Damage|
+|Kills|Kills|True Damage|True Damage|
+|Deaths|Deaths|DPM|Damage per minute|
+|Assists|Assists|DMG%|DMG%|
+|KDA|(K+A)/D|K+A Per Minute|K+A Per Minute|
+|Perfect Score|(K+A)*1.2|KP%|Percentage of team's kill that is yours|
+|CS|Killed CS|Solo kills|Solo kills|
+|CS in Team's Jungle|Killed CS in ally's jungle|Double kills|Double kills|
+|CS in Enemy Jungle|Killed CS in enemy's jungle|Triple kills|Triple kills|
+|CSM|CS per minute|Quadra kills|Quadra kills|
+|Golds|Golds|Penta kills|Penta kills|
+|GPM|Golds per minute|GD@15|Gold Difference at 15 minutes between you and the enemy also in your role|
+|GOLD%|Percentage of team's gold that is yours|CSD@15|CS Difference at 15 minutes between you and the enemy also in your role|
+|Vision Score|Vision Score|XPD@15|Exp Difference at 15 minutes between you and the enemy also in your role|
+|Wards placed|Wards placed|LVLD@15|Level Difference at 15 minutes between you and the enemy also in your role|
+|Wards destroyed|Wards destroyed|Damage dealt to turrets|Damage dealt to turrets|
+|Control Wards Purchased|Control Wards Purchased|Total heal|Total heal|
+|VSPM|Vision Score per minutes|Damage self mitigated|Damage self mitigated|
+|WPM|Wards placed per minute|Time ccing others|Time ccing others|
+|VWPM|Control Wards placed per minute|Total damage taken|Total damage taken|
+|WCPM|Wards cleared per minute|Win|Win|![image](https://user-images.githubusercontent.com/92352445/183241109-d926c5a0-0070-481f-94ed-a550ff876a1a.png)
 
-I crawled the data from this site
-테이블 정의서 들어가고
+</div>
+</br>
 
 ### 2.2. Data Preprocessing
-필요없는 변수 뺴고, 새로운 변수 winner를 넣고 이긴 팀이 1 진 팀이 0
-The observation in KDA which is "Perfect KDA" are replaced by this formula KDA = (K+A)*1.2
+- Used features are `Win`, `Team`, `Player`, `Role`, `Kills`, `Deaths`, `Assists`, `KDA`, `K+A Per Minute`, `KP%`, `Total damage taken`, `Total heal`, `Time ccing others`, `Damage self mitigated`, `Total damage to Champion`, `Damage dealt to turrets`, `DPM`, `Total_CS`, `CSM`, `Golds`, `GPM`, 'Vision Score', 'GD@15', 'CSD@15', 'XPD@15', 'LVLD@15'
+
+- Made a new feature called `Total_CS` which combines 'CS in Team's Jungle", "CS in Enemy Jungle", "CS"
+- Made a new feature called `winner`
+- The observation in KDA which is `Perfect KDA` are replaced by this formula `KDA = (K+A)*1.2`
 Scaling
 PCA
 

@@ -106,17 +106,24 @@ I've crawled the data from this [site](https://gol.gg/tournament/tournament-stat
 - Made a new feature called `winner`
 - The observation in KDA which is `Perfect KDA` are replaced by this formula `KDA = (K+A)*1.2`
 
-Scaling
-
-PCA
 ### 2.3. EDA
-
+</br>
 <p align="Center">
 CLICK THE IMG FOR BETTER VIEW
+</p>
+</br>
+
+Check the correlation coefficient, some features are showing correlation. So I decided to do a `PCA`.
+<p align="Center">
 <img width="770" src="https://user-images.githubusercontent.com/92352445/183241830-65b0e6d7-cced-4383-90af-0989ebbee2a9.png">
 </p>
 
-Check the correlation coefficient, some features are showing correlation.
+Before scalling the data, the data has many outliers.  
+However, in person, I don't like removing data just because it is an outlier.  
+Therefore I didn't remove any outliers, instead I used `RobustScaler` to reduce the affects of the outliers.  
+<p align="Center">
+<img width="770" src="https://user-images.githubusercontent.com/92352445/183282942-27a6260d-883b-4281-b733-9b3bda8d296b.png">
+</p>
 
 ## 3. Model
 ### 3.1. Model: Logistic Regression

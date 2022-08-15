@@ -26,6 +26,8 @@
 
 3. [Model](#3-model)
 
+    3.0. [Model: PCA](#30-model-PCA)
+
     3.1. [Model: Logistic Regression](#31-model-logistic-regression)
     
     3.2. [Model: KNN](#32-model-knn)
@@ -69,7 +71,7 @@ I've crawled the data from this [site](https://gol.gg/tournament/tournament-stat
 
 </br>
 <div align="Center">
-  
+
 |Feature|Explaination|Feature|Explaination|
 |:--------:|:-----------:|:-------:|:-------:|
 |Team|Team Name|Total damage to Champion|Total damage to Champion|
@@ -94,7 +96,7 @@ I've crawled the data from this [site](https://gol.gg/tournament/tournament-stat
 |VSPM|Vision Score per minutes|Damage self mitigated|Damage self mitigated|
 |WPM|Wards placed per minute|Time ccing others|Time ccing others|
 |VWPM|Control Wards placed per minute|Total damage taken|Total damage taken|
-|WCPM|Wards cleared per minute|Win|Win|![image](https://user-images.githubusercontent.com/92352445/183241109-d926c5a0-0070-481f-94ed-a550ff876a1a.png)
+|WCPM|Wards cleared per minute|Win|Win|
 
 </div>
 </br>
@@ -125,7 +127,20 @@ Therefore I didn't remove any outliers, instead I used `RobustScaler` to reduce 
 <img width="770" src="https://user-images.githubusercontent.com/92352445/183282942-27a6260d-883b-4281-b733-9b3bda8d296b.png">
 </p>
 
+After using a `RobustScaler` the boxplot looks like this
+<p align="Center">
+<img width="770" src="https://user-images.githubusercontent.com/92352445/184576964-3ae8038a-49cd-4420-bc0c-fe1829125d4b.png">
+</p>
+
 ## 3. Model
+### 3.0. Model: PCA
+<p align="Center">
+<img width="770" src="https://user-images.githubusercontent.com/92352445/184577259-faa3036f-75b1-4c28-9b9d-b17f724fa72b.png">
+<img width="770" src="https://user-images.githubusercontent.com/92352445/184577266-474f39f1-5bac-493d-83a4-6c0d168a6d40.png">
+</p>
+
+According to the eigen value and the cumulative explained variance on the scree plot , I chose 4 components.
+
 ### 3.1. Model: Logistic Regression
 
 ### 3.2. Model: KNN
@@ -137,6 +152,25 @@ Therefore I didn't remove any outliers, instead I used `RobustScaler` to reduce 
 
 ## 4. Trial
 ### 4.1. Trial: Logistic Regression
+To make sure about the effect of PCA, Let's compare PCA applied data and PCA non-applied data.
+First, I performed a grid search and set scoring = 'roc_auc', cv = 10 and the hyper parameter will be searched in the list below.
+[{'C': np.logspace(-4, 4, 20), 'penalty': [ 'l1', 'l2'], 'solver': ['liblinear']},
+{'C': np.logspace(-4, 4, 20), 'penalty': ['l2'], 'solver': ['lbfgs']}]
+
+The results are below. 
+
+</br>
+<div align="Center">
+
+|     |C     |penalty|solver|best_score_|train|val|
+|:---:|:----:|:-----:|:----:|:---------:|:---:|:--:|
+|PCA non-applied|29.7635|l2|liblinear|0.9723|0.9287|0.9326|
+|PCA applied|0.08859|l2|liblinear|0.9220|0.8566|0.8767|
+|Difference|        |  |         |0.0503|0.0721|0.0559|
+
+</div>
+</br>
+Only a few %p have droped on the train data, So we can say that PCA is the right choice.
 
 ### 4.2. Trial: KNN
 

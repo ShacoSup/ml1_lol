@@ -139,7 +139,7 @@ After using a `RobustScaler` the boxplot looks like this
 <img width="770" src="https://user-images.githubusercontent.com/92352445/184577266-474f39f1-5bac-493d-83a4-6c0d168a6d40.png">
 </p>
 
-According to the eigen value and the cumulative explained variance on the scree plot , I chose 4 components.
+According to the eigen value and the cumulative explained variance on the scree plot, I chose 4 components.
 
 ### 3.1. Model: Logistic Regression
 
@@ -173,12 +173,59 @@ The results are below.
 Only a few %p have droped on the train data, So we can say that PCA is the right choice.
 
 ### 4.2. Trial: KNN
+clf = KNeighborsClassifier()
+h_para = [{'n_neighbors': range(1, 100)}]
+grid_search = GridSearchCV(clf, h_para, scoring = 'roc_auc', cv = 10, n_jobs = -1)
+grid_search = grid_search.fit(X_train_pca_RB, y_train)
+best_accuracy_pca_RB = grid_search.best_score_
+best_parameters_pca_RB = grid_search.best_params_
+print(best_parameters_pca_RB, f'{best_accuracy_pca_RB:.4f}')
+# {'n_neighbors': 61} 0.9199
+
+# pca_RB
+KNN_pca_RB = KNeighborsClassifier(n_neighbors = 61).fit(X_train_pca_RB, y_train)
+print("KNN_pca_RB train: {:.4f}".format(KNN_pca_RB.score(X_train_pca_RB, y_train)))     # 0.8496
+print("KNN_pca_RB val: {:.4f}".format(KNN_pca_RB.score(X_val_pca_RB, y_val)))           # 0.8465
 
 ### 4.3. Trial: Decision Tree
+clf = DecisionTreeClassifier(random_state = 0)
+h_para = [{'criterion': ['entropy', 'gini'], 'max_depth': np.arange(1, 20),
+           'max_leaf_nodes': np.arange(2, 20), 'min_samples_split': np.arange(2, 20),
+           'min_samples_leaf': np.arange(1, 20)}]
+rds = RandomizedSearchCV(clf, h_para, n_iter = 10, cv = 10, 
+                         scoring = 'roc_auc', n_jobs = -1).fit(X_train_pca_RB, y_train)
+best_accuracy_pca_RB = rds.best_score_
+best_parameters_pca_RB = rds.best_params_
+print(best_parameters_pca_RB, f'{best_accuracy_pca_RB:.4f}')
+# {'min_samples_split': 2, 'min_samples_leaf': 13, 'max_leaf_nodes': 15, 'max_depth': 6, 'criterion': 'entropy'} 0.8620
+
+
+# pca_RB
+DTC_pca_RB = DecisionTreeClassifier(max_depth = 6, max_leaf_nodes = 15, min_samples_leaf = 13,
+                                    min_samples_split = 2, criterion = 'entropy').fit(X_train_pca_RB, y_train)
+print("DTC_pca_RB train: {:.4f}".format(DTC_pca_RB.score(X_train_pca_RB, y_train)))     # 0.8132
+print("DTC_pca_RB val: {:.4f}".format(DTC_pca_RB.score(X_val_pca_RB, y_val)))           # 0.8093
 
 ### 4.4. Trial: SVM
+clf = SVC()
+h_para = [{'kernel': [ 'linear' ], 'C': np.logspace(-3, 2, 6)},
+          {'kernel': ['rbf'], 'C': np.logspace(-3, 2, 6), 'gamma': np.logspace(-3, 2, 6)}]
+grid_search = GridSearchCV(clf, h_para, cv = 10, scoring = 'roc_auc', n_jobs = -1)
+gds = grid_search.fit(X_train_pca_RB, y_train)
+best_accuracy_gds_pca_RB = gds.best_score_
+best_parameters_gds_pca_RB = gds.best_params_
+print(best_parameters_gds_pca_RB, f'{best_accuracy_gds_pca_RB:.4f}')
+# {'C': 0.01, 'kernel': 'linear'} 0.9221
+
+# pca_RB
+svm_pca_RB = SVC(kernel = 'linear', C = 0.01).fit(X_train_pca_RB, y_train)
+print("svm_pca_RB train: {:.4f}".format(svm_pca_RB.score(X_train_pca_RB, y_train)))    # 0.8550
+print("svm_pca_RB val: {:.4f}".format(svm_pca_RB.score(X_val_pca_RB, y_val)))          # 0.8744
 
 ## 5. Conclusion
+![__results___36_0](https://user-images.githubusercontent.com/92352445/191640744-34a4395c-0f6b-4399-9bd9-cd657d83f410.png)
+![__results___37_1](https://user-images.githubusercontent.com/92352445/191640832-3df8e080-3319-4e99-bcb3-2034086fe490.png)
+![__results___38_0](https://user-images.githubusercontent.com/92352445/191640850-dec0c49b-c709-4ccb-ad16-95bccfd4b4bd.png)
 
 ## Refernce
 [1] https://medium.com/@bjmoon.korea/ai-x-%EB%94%A5%EB%9F%AC%EB%8B%9D-fianl-assignment-84e66d7e451d
